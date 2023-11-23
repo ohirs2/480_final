@@ -49,6 +49,33 @@ public class DatabaseService {
         }
     }
 
+    public List<Map<String, Object>> getAllVaccineData() {
+        return jdbcTemplate.queryForList("SELECT * FROM Vaccine");
+    }
+
+    public List<Map<String, Object>> getAllVaccineInventoryData() {
+        return jdbcTemplate.queryForList("SELECT * FROM VaccineInventory");
+    }
+
+    public List<Map<String, Object>> getAllNurseData() {
+        return jdbcTemplate.queryForList("SELECT * FROM Nurse");
+    }
+
+    public List<Map<String, Object>> getAllPatientData() {
+        return jdbcTemplate.queryForList("SELECT * FROM Patient");
+    }
+
+    public List<Map<String, Object>> getAllNurseSchedulingData() {
+        return jdbcTemplate.queryForList("SELECT * FROM NurseScheduling");
+    }
+
+    public List<Map<String, Object>> getAllVaccinationRecordData() {
+        return jdbcTemplate.queryForList("SELECT * FROM VaccinationRecord");
+    }
+
+    public List<Map<String, Object>> getAllVaccinationSchedulingData() {
+        return jdbcTemplate.queryForList("SELECT * FROM VaccinationScheduling");
+    }
 
     public void insertNurse(String firstName, String middleInitial, String lastName, String employeeID, String gender, String phoneNumber, String address) {
         String sql = "INSERT INTO Nurse (FirstName, MiddleInitial, LastName, EmployeeID, Gender, PhoneNumber, Address) VALUES (?, ?, ?, ?, ?, ?, ?)";

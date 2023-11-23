@@ -5,12 +5,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/nursescheduling")
 public class NurseSchedulingController {
 
     @Autowired
     private DatabaseService databaseService;
+
+
+    @GetMapping
+    public ResponseEntity<List<Map<String, Object>>> getAllNurseSchedulingData() {
+        return ResponseEntity.ok(databaseService.getAllNurseSchedulingData());
+    }
 
     @PostMapping("/insert")
     public ResponseEntity<String> insertNurseScheduling(@RequestBody NurseScheduling nurseScheduling) {

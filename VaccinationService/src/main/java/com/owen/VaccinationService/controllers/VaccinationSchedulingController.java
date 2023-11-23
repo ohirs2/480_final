@@ -5,12 +5,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/vaccinationscheduling")
 public class VaccinationSchedulingController {
 
     @Autowired
     private DatabaseService databaseService;
+
+
+    @GetMapping
+    public ResponseEntity<List<Map<String, Object>>> getAllVaccinationSchedulingData() {
+        return ResponseEntity.ok(databaseService.getAllVaccinationSchedulingData());
+    }
 
     @PostMapping("/insert")
     public ResponseEntity<String> insertVaccinationScheduling(@RequestBody VaccinationScheduling vaccinationScheduling) {
