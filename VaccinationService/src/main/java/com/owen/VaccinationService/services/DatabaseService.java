@@ -1,6 +1,8 @@
 package com.owen.VaccinationService.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +14,9 @@ public class DatabaseService {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public Map<String, List<Map<String, Object>>> getDatabaseSchema() {
         List<String> tableNames = jdbcTemplate.queryForList("SELECT name FROM sqlite_master WHERE type='table'", String.class);
@@ -147,6 +152,99 @@ public class DatabaseService {
         String sql = "DELETE FROM Nurse WHERE EmployeeID = ?";
         return jdbcTemplate.update(sql, nurseId);
     }
+
+    public int updateVaccine(int vaccineId, String name, String company, int dosesRequired, String description) {
+        String sql = "UPDATE Vaccine SET Name = :name, Company = :company, DosesRequired = :dosesRequired, Description = :description WHERE VaccineID = :vaccineId";
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("name", name)
+                .addValue("company", company)
+                .addValue("dosesRequired", dosesRequired)
+                .addValue("description", description)
+                .addValue("vaccineId", vaccineId);
+
+        return namedParameterJdbcTemplate.update(sql, params);
+    }
+
+    public int updateVaccineInventory(int vaccineInventoryId, int vaccineId, int quantityAvailable, int quantityOnHold) {
+        String sql = "UPDATE VaccineInventory SET VaccineID = :vaccineId, QuantityAvailable = :quantityAvailable, QuantityOnHold = :quantityOnHold WHERE VaccineInventoryID = :vaccineInventoryId";
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("vaccineId", vaccineId)
+                .addValue("quantityAvailable", quantityAvailable)
+                .addValue("quantityOnHold", quantityOnHold)
+                .addValue("vaccineInventoryId", vaccineInventoryId);
+
+        return namedParameterJdbcTemplate.update(sql, params);
+    }
+
+    public int updatePatient(String ssn, String firstName, String lastName, int age, String gender, String race, String occupationClass, String phoneNumber, String address, String medicalHistory) {
+        String sql = "UPDATE Patient SET FirstName = :firstName, LastName = :lastName, Age = :age, Gender = :gender, Race = :race, OccupationClass = :occupationClass, PhoneNumber = :phoneNumber, Address = :address, MedicalHistory = :medicalHistory WHERE SSN = :ssn";
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("firstName", firstName)
+                .addValue("lastName", lastName)
+                .addValue("age", age)
+                .addValue("gender", gender)
+                .addValue("race", race)
+                .addValue("occupationClass", occupationClass)
+                .addValue("phoneNumber", phoneNumber)
+                .addValue("address", address)
+                .addValue("medicalHistory", medicalHistory)
+                .addValue("ssn", ssn);
+
+        return namedParameterJdbcTemplate.update(sql, params);
+    }
+    public int updateNurseScheduling(int nurseSchedulingId, int nurseId, String timeSlot) {
+        String sql = "UPDATE NurseScheduling SET NurseID = :nurseId, TimeSlot = :timeSlot WHERE NurseSchedulingID = :nurseSchedulingId";
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("nurseId", nurseId)
+                .addValue("timeSlot", timeSlot)
+                .addValue("nurseSchedulingId", nurseSchedulingId);
+
+        return namedParameterJdbcTemplate.update(sql, params);
+    }
+    public int updateVaccinationRecord(int vaccinationRecordId, int patientId, int vaccineId, int doseNumber, String scheduledTime, int nurseId, String status) {
+        String sql = "UPDATE VaccinationRecord SET PatientID = :patientId, VaccineID = :vaccineId, DoseNumber = :doseNumber, ScheduledTime = :scheduledTime, NurseID = :nurseId, Status = :status WHERE VaccinationRecordID = :vaccinationRecordId";
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("patientId", patientId)
+                .addValue("vaccineId", vaccineId)
+                .addValue("doseNumber", doseNumber)
+                .addValue("scheduledTime", scheduledTime)
+                .addValue("nurseId", nurseId)
+                .addValue("status", status)
+                .addValue("vaccinationRecordId", vaccinationRecordId);
+
+        return namedParameterJdbcTemplate.update(sql, params);
+    }
+    public int updateVaccinationScheduling(int vaccinationSchedulingId, int vaccinationRecordId, String timeSlot) {
+        String sql = "UPDATE VaccinationScheduling SET VaccinationRecordID = :vaccinationRecordId, TimeSlot = :timeSlot WHERE VaccinationSchedulingID = :vaccinationSchedulingId";
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("vaccinationRecordId", vaccinationRecordId)
+                .addValue("timeSlot", timeSlot)
+                .addValue("vaccinationSchedulingId", vaccinationSchedulingId);
+
+        return namedParameterJdbcTemplate.update(sql, params);
+    }
+    public int updateNurse(String employeeID, String firstName, String middleInitial, String lastName, String gender, String phoneNumber, String address) {
+        String sql = "UPDATE Nurse SET FirstName = :firstName, MiddleInitial = :middleInitial, LastName = :lastName, Gender = :gender, PhoneNumber = :phoneNumber, Address = :address WHERE EmployeeID = :employeeID";
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("firstName", firstName)
+                .addValue("middleInitial", middleInitial)
+                .addValue("lastName", lastName)
+                .addValue("gender", gender)
+                .addValue("phoneNumber", phoneNumber)
+                .addValue("address", address)
+                .addValue("employeeID", employeeID);
+
+        return namedParameterJdbcTemplate.update(sql, params);
+    }
+
+
 
 
 }

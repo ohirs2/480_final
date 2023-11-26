@@ -1,0 +1,64 @@
+
+<h1>Edit Nurses</h1>
+<table>
+    <thead>
+      <tr>
+        <th>First</th>
+        <th>M.I.</th>
+        <th>Last</th>
+        <th>Employee ID</th>
+        <th>Gender</th>
+        <th>Phone Number</th>
+        <th>Address</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let nurse of nurses; let i = index">
+        <td>
+          <span *ngIf="!nurse.isEditMode">{{ nurse.FirstName }}</span>
+          <input *ngIf="nurse.isEditMode" type="text" [(ngModel)]="nurse.FirstName">
+        </td>
+        <!-- Repeat for other fields -->
+        <td>
+            <span *ngIf="!nurse.isEditMode">{{ nurse.MiddleInitial }}</span>
+            <input *ngIf="nurse.isEditMode" type="text" [(ngModel)]="nurse.MiddleInitial">
+        </td>
+        <td>
+          <span *ngIf="!nurse.isEditMode">{{ nurse.LastName }}</span>
+          <input *ngIf="nurse.isEditMode" type="text" [(ngModel)]="nurse.LastName">
+        </td>
+        <td>
+            <span *ngIf="!nurse.isEditMode">{{ nurse.EmployeeID }}</span>
+            <input *ngIf="nurse.isEditMode" type="text" [(ngModel)]="nurse.EmployeeID">
+        </td>
+        <td>
+            <span *ngIf="!nurse.isEditMode">{{ nurse.Gender }}</span>
+            <input *ngIf="nurse.isEditMode" type="text" [(ngModel)]="nurse.Gender">
+        </td>
+        <td>
+            <span *ngIf="!nurse.isEditMode">{{ nurse.PhoneNumber }}</span>
+            <input *ngIf="nurse.isEditMode" type="text" [(ngModel)]="nurse.PhoneNumber">
+        </td>
+        
+        <td>
+            <span *ngIf="!nurse.isEditMode">{{ nurse.Address }}</span>
+            <input *ngIf="nurse.isEditMode" type="text" [(ngModel)]="nurse.Address">
+        </td>
+        <td>
+          <button (click)="toggleEdit(nurse)">{{ nurse.isEditMode ? 'Save' : 'Edit' }}</button>
+          <button (click)="deleteNurse(i)">Delete</button>
+        </td>
+      </tr>
+      
+    </tbody>
+    <tfoot>
+        <tr>
+          <td colspan="6"> <!-- Adjust the colspan based on your number of columns -->
+            <button (click)="addNurse()">Add Nurse</button>
+          </td>
+        </tr>
+      </tfoot>
+    
+  </table>
+  

@@ -3,6 +3,7 @@ package com.owen.VaccinationService.controllers;
 import com.owen.VaccinationService.entities.Vaccine;
 import com.owen.VaccinationService.services.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +43,21 @@ public class VaccineController {
             return ResponseEntity.ok("Vaccine deleted successfully.");
         } else {
             return ResponseEntity.status(404).body("No vaccine found with the provided ID.");
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateVaccine(@PathVariable int id, @RequestBody Vaccine vaccine) {
+        String name = vaccine.getName();
+        String company = vaccine.getCompany();
+        int dosesRequired = vaccine.getDosesRequired();
+        String description = vaccine.getDescription();
+
+        int rowsAffected = databaseService.updateVaccine(id, name, company, dosesRequired, description);
+        if (rowsAffected > 0) {
+            return ResponseEntity.ok("Vaccine updated successfully.");
+        } else {
+            return new ResponseEntity<>("Failed to update the vaccine.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

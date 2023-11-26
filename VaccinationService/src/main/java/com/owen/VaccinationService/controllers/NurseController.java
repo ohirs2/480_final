@@ -3,6 +3,7 @@ package com.owen.VaccinationService.controllers;
 import com.owen.VaccinationService.entities.Nurse;
 import com.owen.VaccinationService.services.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +49,34 @@ public class NurseController {
         } else {
             System.out.println("No nurse found with the provided ID.");
             return "No nurse found with the provided ID."; // Return a response
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateNurse(@PathVariable String id, @RequestBody Nurse nurse) {
+        // Extract the nurse information from the request body
+        String firstName = nurse.getFirstName();
+        String middleInitial = nurse.getMiddleInitial();
+        String lastName = nurse.getLastName();
+        String employeeID = id; // Assuming the ID in the path is the EmployeeID
+        String gender = nurse.getGender();
+        String phoneNumber = nurse.getPhoneNumber();
+        String address = nurse.getAddress();
+
+        // Check if the nurse exists before updating
+        List<Map<String, Object>> nurseData = databaseService.getAllNurseData();
+        boolean nurseExists = nurseData.stream().anyMatch(n -> n.get("EmployeeID").equals(employeeID));
+
+        if (!nurseExists) {
+            return new ResponseEntity<>("Nurse with ID " + id + " not found.", HttpStatus.NOT_FOUND);
+        }
+
+        // Calling the service method to update the nurse
+        int rowsAffected = databaseService.updateNurse(employeeID, firstName, middleInitial, lastName, gender, phoneNumber, address);
+        if (rowsAffected > 0) {
+            return ResponseEntity.ok("Nurse updated successfully.");
+        } else {
+            return new ResponseEntity<>("Failed to update the nurse.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

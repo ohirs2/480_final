@@ -3,6 +3,7 @@ package com.owen.VaccinationService.controllers;
 import com.owen.VaccinationService.entities.Patient;
 import com.owen.VaccinationService.services.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,4 +53,25 @@ public class PatientController {
             return ResponseEntity.status(404).body("No patient found with the provided SSN.");
         }
     }
+
+    @PutMapping("/update/{ssn}")
+    public ResponseEntity<String> updatePatient(@PathVariable String ssn, @RequestBody Patient patient) {
+        String firstName = patient.getFirstName();
+        String lastName = patient.getLastName();
+        int age = patient.getAge();
+        String gender = patient.getGender();
+        String race = patient.getRace();
+        String occupationClass = patient.getOccupationClass();
+        String phoneNumber = patient.getPhoneNumber();
+        String address = patient.getAddress();
+        String medicalHistory = patient.getMedicalHistory();
+        int rowsAffected = databaseService.updatePatient(ssn, firstName, lastName, age, gender, race, occupationClass, phoneNumber, address, medicalHistory);
+        if (rowsAffected > 0) {
+            return ResponseEntity.ok("Patient updated successfully.");
+        } else {
+            return new ResponseEntity<>("Failed to update the patient.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }
