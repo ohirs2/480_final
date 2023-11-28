@@ -18,6 +18,10 @@ public class PatientController {
     @Autowired
     private DatabaseService databaseService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> getPersonData(@PathVariable String id) {
+        return ResponseEntity.ok(databaseService.getPatient(Integer.parseInt(id)));
+    }
 
     @GetMapping
     public ResponseEntity<List<Map<String, Object>>> getAllPatientData() {
@@ -43,9 +47,9 @@ public class PatientController {
         return ResponseEntity.ok("Patient inserted successfully");
     }
 
-    @DeleteMapping("/delete/{ssn}")
-    public ResponseEntity<String> deletePatient(@PathVariable String ssn) {
-        int rowsAffected = databaseService.deletePatientById(ssn);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deletePatient(@PathVariable String id) {
+        int rowsAffected = databaseService.deletePatientById(id);
 
         if(rowsAffected > 0) {
             return ResponseEntity.ok("Patient deleted successfully.");
@@ -54,10 +58,11 @@ public class PatientController {
         }
     }
 
-    @PutMapping("/update/{ssn}")
-    public ResponseEntity<String> updatePatient(@PathVariable String ssn, @RequestBody Patient patient) {
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updatePatient(@PathVariable String id, @RequestBody Patient patient) {
         String firstName = patient.getFirstName();
         String lastName = patient.getLastName();
+        String ssn = patient.getSsn();
         int age = patient.getAge();
         String gender = patient.getGender();
         String race = patient.getRace();
@@ -65,7 +70,7 @@ public class PatientController {
         String phoneNumber = patient.getPhoneNumber();
         String address = patient.getAddress();
         String medicalHistory = patient.getMedicalHistory();
-        int rowsAffected = databaseService.updatePatient(ssn, firstName, lastName, age, gender, race, occupationClass, phoneNumber, address, medicalHistory);
+        int rowsAffected = databaseService.updatePatient(id, ssn, firstName, lastName, age, gender, race, occupationClass, phoneNumber, address, medicalHistory);
         if (rowsAffected > 0) {
             return ResponseEntity.ok("Patient updated successfully.");
         } else {

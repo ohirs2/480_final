@@ -22,6 +22,11 @@ public class NurseSchedulingController {
         return ResponseEntity.ok(databaseService.getAllNurseSchedulingData());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<List<Map<String, Object>>> getSchedulingByNurseId(@PathVariable String id) {
+        return ResponseEntity.ok(databaseService.getNurseScheduling(Integer.parseInt(id)));
+    }
+
     @PostMapping("/insert")
     public ResponseEntity<String> insertNurseScheduling(@RequestBody NurseScheduling nurseScheduling) {
         int nurseId = nurseScheduling.getNurseId();

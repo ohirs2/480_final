@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,11 @@ public class NurseController {
     @GetMapping
     public ResponseEntity<List<Map<String, Object>>> getAllNurseData() {
         return ResponseEntity.ok(databaseService.getAllNurseData());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> getNurseData(@PathVariable String id) {
+        return ResponseEntity.ok(databaseService.getNurse(Integer.parseInt(id)));
     }
 
     @PostMapping("/insert")
@@ -58,21 +64,22 @@ public class NurseController {
         String firstName = nurse.getFirstName();
         String middleInitial = nurse.getMiddleInitial();
         String lastName = nurse.getLastName();
-        String employeeID = id; // Assuming the ID in the path is the EmployeeID
+        String employeeID = nurse.getEmployeeID();
         String gender = nurse.getGender();
         String phoneNumber = nurse.getPhoneNumber();
         String address = nurse.getAddress();
 
+
         // Check if the nurse exists before updating
         List<Map<String, Object>> nurseData = databaseService.getAllNurseData();
-        boolean nurseExists = nurseData.stream().anyMatch(n -> n.get("EmployeeID").equals(employeeID));
+        boolean nurseExists = nurseData.stream().anyMatch(n -> n.get("NurseID").toString().equals(id.toString()));
 
         if (!nurseExists) {
             return new ResponseEntity<>("Nurse with ID " + id + " not found.", HttpStatus.NOT_FOUND);
         }
 
         // Calling the service method to update the nurse
-        int rowsAffected = databaseService.updateNurse(employeeID, firstName, middleInitial, lastName, gender, phoneNumber, address);
+        int rowsAffected = databaseService.updateNurse(id, employeeID, firstName, middleInitial, lastName, gender, phoneNumber, address);
         if (rowsAffected > 0) {
             return ResponseEntity.ok("Nurse updated successfully.");
         } else {

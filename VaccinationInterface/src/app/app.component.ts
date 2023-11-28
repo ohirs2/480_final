@@ -11,5 +11,6 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  
+  public nurseId = -1;
+  public patientId = -1;
 }
