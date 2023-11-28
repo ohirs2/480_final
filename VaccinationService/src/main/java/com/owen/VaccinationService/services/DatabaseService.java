@@ -203,6 +203,12 @@ public class DatabaseService {
         String sql = "SELECT * FROM NurseScheduling WHERE NurseID = ?";
         return jdbcTemplate.queryForList(sql, nurseId);
     }
+
+    public List<Map<String, Object>> getVaccinationRecords(String patientID) {
+
+        String sql = "SELECT * FROM VaccinationRecord WHERE PatientID = ?";
+        return jdbcTemplate.queryForList(sql, patientID);
+    }
     public int updateNurseScheduling(int nurseSchedulingId, int nurseId, String timeSlot) {
         String sql = "UPDATE NurseScheduling SET NurseID = :nurseId, TimeSlot = :timeSlot WHERE NurseSchedulingID = :nurseSchedulingId";
 

@@ -37,8 +37,8 @@ export class AdminComponent implements OnInit {
     );
 
     this.loadVaccinesAndInventories();
-    this.loadVaccineSchedulingAndRecords();
     this.loadVaccinationRecords();
+    this.loadAvailableTimes();
  
   }
 
@@ -51,10 +51,17 @@ export class AdminComponent implements OnInit {
   vaccines: any[] = [];
   vaccineInventories: any[] = [];
   vaccineRecords: any[] = [];
+  
+  vaccineRecordsf: any[] = [];
+
+  vaccineRecordsp: any[] = [];
+
   vaccineSchedulings: any[] = [];
   searchPatientId: string = '';
   searchNurseId: string = '';
   filteredSchedules: any[] = [];
+
+  availableTimes: any = [];
 
   constructor(private http: HttpClient, private cd: ChangeDetectorRef) {}
 
@@ -74,6 +81,14 @@ export class AdminComponent implements OnInit {
       (response) => {
         console.log(response )
         this.vaccineRecords = response;
+
+        this.vaccineRecords.forEach((record) => {
+          if(this.isDateInPast(record.ScheduledTime)) {
+            this.vaccineRecordsp.push(record)
+          } else {
+            this.vaccineRecordsf.push(record);
+          }
+        })
       },
       (error) => {
         console.error('Error fetching vaccination records:', error);
@@ -81,37 +96,24 @@ export class AdminComponent implements OnInit {
     );
   }
 
-  loadVaccineSchedulingAndRecords() {
-    this.http.get<any>('http://localhost:8080/vaccinationscheduling').subscribe(
-      (schedulingResponse) => {
-        this.vaccineSchedulings = schedulingResponse;
-        this.http.get<any>('http://localhost:8080/vaccination-record').subscribe(
-          (recordsResponse) => {
-            this.vaccineRecords = recordsResponse;
-            this.mergeSchedulingWithRecords();
-            this.filteredSchedules = this.vaccineSchedulings;
-          },
-          (recordsError) => {
-            console.error('Error fetching vaccination records:', recordsError);
-          }
-        );
+  loadAvailableTimes() {
+    this.http.get('http://localhost:8080/nurse-scheduling').subscribe(
+      response => {
+        console.log(response);
+        this.availableTimes = response
       },
-      (schedulingError) => {
-        console.error('Error fetching vaccine scheduling:', schedulingError);
+      error => {
+        console.log(error);
       }
-    );
+    )
   }
 
-  mergeSchedulingWithRecords() {
-    this.vaccineSchedulings = this.vaccineSchedulings.map(scheduling => {
-      const correspondingRecord = this.vaccineRecords.find(record => record.VaccineRecordID === scheduling.VaccineRecordID);
-      return {
-        ...scheduling,
-        PatientID: correspondingRecord ? correspondingRecord.PatientID : null,
-        NurseID: correspondingRecord ? correspondingRecord.NurseID : null
-      };
-    });
-  }
+  isDateInPast(dateString: string): boolean {
+    const now = new Date();
+    const inputDate = new Date(dateString);
+
+    return inputDate < now;
+}
 
   filterSchedules() {
     this.filteredSchedules = this.vaccineSchedulings.filter(schedule => {

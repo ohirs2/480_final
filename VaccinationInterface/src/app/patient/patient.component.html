@@ -1,5 +1,6 @@
 
-<section class="info-section update-info">
+<div class="container">
+<section class="info-section update-info" >
     <h2>Update Information</h2>
     
     <div class="form-group">
@@ -54,4 +55,57 @@
   
     <button class="btn btn-primary" (click)="updatePatientInfo()" type="submit">Update Info</button>
   </section>
+
+  <section class="info-section schedule-vaccination">
+    <h2>Schedule a Vaccination</h2>
   
+    <div class="form-group">
+      <label for="availableTimes">Available Times:</label>
+      <select id="availableTimes" class="form-control" [(ngModel)]="selectedTime" name="availableTimes">
+        <option value="" disabled selected>Select a time slot</option>
+        <option *ngFor="let time of availableTimeSlots" [value]="time">{{ time.TimeSlot }}</option>
+      </select>
+    </div>
+  
+    <button class="btn btn-success" (click)="scheduleVaccination()" type="button">Schedule Vaccination</button>
+  </section>
+
+  <section class="vaccination-section">
+    <h2>Scheduled Vaccinations</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Vaccine</th>
+          <th>Cancel Appointment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of vaccineRecordsf">
+          <td>{{ record.ScheduledTime | date }}</td>
+          <td>{{ record.VaccineID }}</td>
+          <td><button class="btn btn-warning" (click)="cancelVaccination(record.VaccinationRecordID)">Cancel</button></td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <h2>Vaccination History</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Vaccine</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of vaccineRecordsp">
+          <td>{{ record.ScheduledTime | date }}</td>
+          <td>{{ record.VaccineName }}</td>
+          <td>{{ record.Status }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  
+</div>

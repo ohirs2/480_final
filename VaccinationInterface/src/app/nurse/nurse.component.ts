@@ -142,7 +142,6 @@ export class NurseComponent implements OnInit {
     this.http.post(url, vaccinationRecord).subscribe(
       response => {
         console.log('Vaccination recorded', response);
-        // Handle successful recording
       },
       error => {
         console.error('Recording failed', error);

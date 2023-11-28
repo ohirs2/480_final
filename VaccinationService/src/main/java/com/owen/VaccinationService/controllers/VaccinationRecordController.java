@@ -21,6 +21,11 @@ public class VaccinationRecordController {
         return ResponseEntity.ok(databaseService.getAllVaccinationRecordData());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<List<Map<String, Object>>> getVaccinationRecordsByPatientID(@PathVariable String id) {
+        return ResponseEntity.ok(databaseService.getVaccinationRecords(id));
+    }
+
     @PostMapping("/insert")
     public ResponseEntity<String> insertVaccinationRecord(@RequestBody VaccinationRecord vaccinationRecord) {
         int patientId = vaccinationRecord.getPatientId();

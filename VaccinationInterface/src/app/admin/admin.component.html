@@ -141,7 +141,28 @@
     </td>
   </table>
 
-  <h2 class="text-center mt-20">Vaccine Scheduling</h2>
+
+  <h2 class="text-center mt-20">Available Times</h2>
+    
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Nurse ID</th>
+          <th>Timeslot</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let time of availableTimes">
+          <td>{{time.NurseID}}</td>
+          <td>{{time.TimeSlot}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+
+  <h2 class="text-center mt-20">Vaccine Schedule</h2>
     
     
     <table>
@@ -149,16 +170,47 @@
         <tr>
           <th>Vaccine Record ID</th>
           <th>Patient ID</th>
+          <th>Vaccine ID</th>
+          <th>Dose Number</th>
+          <th>Scheduled Time</th>
           <th>Nurse ID</th>
-          <th>Time Slot</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let schedule of filteredSchedules">
-          <td>{{ schedule.VaccinationRecordID }}</td>
-          <td>{{ schedule.PatientID }}</td>
-          <td>{{ schedule.NurseID }}</td>
-          <td>{{ schedule.TimeSlot }}</td>
+        <tr *ngFor="let record of vaccineRecordsf">
+          <td>{{ record.VaccinationRecordID }}</td>
+          <td>{{ record.PatientID }}</td>
+          <td>{{ record.VaccineID }}</td>
+          <td>{{ record.DoseNumber}}</td>
+          <td>{{ record.ScheduledTime }}</td>
+          <td>{{ record.NurseID }}</td>
+          <td>{{ record.Status}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 class="text-center mt-20">Vaccine History</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Vaccine Record ID</th>
+          <th>Patient ID</th>
+          <th>Vaccine ID</th>
+          <th>Dose Number</th>
+          <th>Time</th>
+          <th>Nurse ID</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of vaccineRecordsp">
+          <td>{{ record.VaccinationRecordID }}</td>
+          <td>{{ record.PatientID }}</td>
+          <td>{{ record.VaccineID }}</td>
+          <td>{{ record.DoseNumber}}</td>
+          <td>{{ record.ScheduledTime }}</td>
+          <td>{{ record.NurseID }}</td>
+          <td>{{ record.Status}}</td>
         </tr>
       </tbody>
     </table>
