@@ -77,7 +77,7 @@ export class PatientComponent implements OnInit {
       status: 'scheduled'
     };
 
-    this.http.post('http://localhost:8080/vaccination-records/insert', vaccinationData)
+    this.http.post('http://localhost:8080/vaccination-record/insert', vaccinationData)
       .subscribe(
         response => {
           console.log('Vaccination scheduled', response);
@@ -128,7 +128,7 @@ export class PatientComponent implements OnInit {
       (response) => {
         this.vaccineRecords = response;
         console.log('test');
-        console.log(this.vaccineRecords);
+        console.log(response);
         this.vaccineRecords.forEach((record: any) => {
 
           if(this.isDateInPast(record.ScheduledTime)) {

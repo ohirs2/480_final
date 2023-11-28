@@ -63,7 +63,7 @@
       <label for="availableTimes">Available Times:</label>
       <select id="availableTimes" class="form-control" [(ngModel)]="selectedTime" name="availableTimes">
         <option value="" disabled selected>Select a time slot</option>
-        <option *ngFor="let time of availableTimeSlots" [value]="time">{{ time.TimeSlot }}</option>
+        <option *ngFor="let time of availableTimeSlots" [value]="time.TimeSlot">{{ time.TimeSlot }}</option>
       </select>
     </div>
   
@@ -82,7 +82,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let record of vaccineRecordsf">
-          <td>{{ record.ScheduledTime | date }}</td>
+          <td>{{ record.ScheduledTime }}</td>
           <td>{{ record.VaccineID }}</td>
           <td><button class="btn btn-warning" (click)="cancelVaccination(record.VaccinationRecordID)">Cancel</button></td>
         </tr>
@@ -100,7 +100,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let record of vaccineRecordsp">
-          <td>{{ record.ScheduledTime | date }}</td>
+          <td>{{ record.ScheduledTime }}</td>
           <td>{{ record.VaccineName }}</td>
           <td>{{ record.Status }}</td>
         </tr>
